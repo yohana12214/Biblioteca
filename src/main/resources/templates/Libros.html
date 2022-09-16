@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>Gestion de Libros</title>
+</head>
+<body>
+<div class="container-fluid p-2">
+    <div class="row bg-primary">
+        <div class="col-4 pt-3 pb-3">
+            <img class="img-fluid"src="https://i.pinimg.com/originals/1f/1a/94/1f1a946611002ed73656a4bd22210503.jpg" width="30%" height="40%">
+        </div>
+
+        <div class="col">
+            <h1 class="display-1 text-right text-light p-4">Gestion de Libros</h1>
+        </div>
+    </div>
+</div>
+<!--Tarjeta con Info de libros-->
+<div class="container">
+    <div class="row" mt-5>
+
+            <div th:each="libro:${lista}"class="card col" style="width: 18rem;">
+                <img src="https://previews.123rf.com/images/jemastock/jemastock1904/jemastock190432680/123069327-libros-volando-y-dibujos-animados-apilados-sobre-fondo-azul-splash .jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"th:text="${libro.titulo}">Título de la tarjeta</h5>
+                    <p class="card-text" th:text="${libro.isbn}"></p>
+                    <p class="card-text" th:text="${libro.autor}"></p>
+                    <p class="card-text" th:text="${libro.editorial}"></p>
+                    <button type="button"class="btn btn-warning">Editar</button>
+                    <button type="button"class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+
+
+<!--<h1 class="display-1 bg-primary" th:text="Bienvenido...+${nombre}"></h1> -->
+</body>
+</html>
