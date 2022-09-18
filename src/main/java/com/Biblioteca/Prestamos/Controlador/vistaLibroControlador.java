@@ -5,7 +5,9 @@ import com.Biblioteca.Prestamos.Servicios.libroServicio;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -33,5 +35,29 @@ public class vistaLibroControlador {
      model.addAttribute("lista",lista);
     return "Libros";
 }
+
+    @GetMapping("/formLibro")
+    public String mostrarFormulario(Model model){
+        model.addAttribute("libro",new Libro());
+        return "registrarLibro";
+    }
+
+    @PostMapping("/RegistrarLibro")
+    public String agregarLibro(@ModelAttribute("libro") Libro libro){
+       servicio.agregarLibro(libro);
+       return "redirect:/Libros";
+    }
+
+    @GetMapping("/EditarLibro/{isbn}")
+    public String pasarLibro(@PathVariable("isbn") String isbn, Model model ){
+        model.addAttribute("libro", servicio.buscarLibro1(isbn));
+        return  "EditarLibro";
+    }
+
+    @GetMapping("/EliminarLibro/{isbn}")
+    public String eliminarLibro(@PathVariable("isbn") String isbn, Model mode){
+        servicio.eliminarLibro(isbn);
+        return "redirect:/Libros";
+    }
 
 }
