@@ -39,10 +39,10 @@ public class libroControlador {
 
     /*----------------------para INSERTAR o guardar  "POST"---------------------------------------*/
 
-    @PostMapping("/AgregarLibro")
+   /* @PostMapping("/AgregarLibro")
     public String agregarLibro(@RequestBody Libro libro){
     return servicio.agregarLibro(libro);
-    }
+    }*/
 
     /*------------------------------------para ACTUALIZAR O modificar  "PUT"-----------------------------------------*/
 

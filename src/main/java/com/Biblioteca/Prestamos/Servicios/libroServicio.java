@@ -53,12 +53,12 @@ public class libroServicio {
     /*........................INSERTAR o agregar  "POST"....................*/
 
     //necesitamos que retorne si se registra exitosamente y que adema´s si existe ya, no salga una EXCEPCION
-    public String agregarLibro (Libro libro){
+    public boolean agregarLibro (Libro libro){
         if(!buscarLibro(libro.getIsbn()).isPresent()){//llamo al metodp buscar libro por id y ispresent me dice si existe
         repositorio.save(libro);//esto solo para agregar sin tener en cuanta la excepcio
-        return "Libro registrado exitosamente";
+        return true; //se hicieron modificacio
         }else{
-            return "El libro ya existe";
+            return false;
         }
     }
 

@@ -12,12 +12,12 @@
     <form method="post" th:action="@{/RegistrarLibro}" th:object="${libro}">
         <div class="mb-3">
             <label for="isbn" class="form-label">Codigo Isbn del Libro</label>
-            <input type="text" class="form-control" id="isbn" aria-describedby="emailHelp" placeholder="isbn01" th:field="*{isbn}"  required pattern="[Isbn0-9]+" minlength="6" maxlength="8">
+            <input type="text" class="form-control" id="isbn" aria-describedby="emailHelp" placeholder="isbn01" th:field="*{isbn}"  required pattern="[isbn0-9]+" minlength="6" maxlength="8">
         </div>
 
         <div class="mb-3">
             <label for="titulo" class="form-label">Titulo</label>
-            <input type="text" class="form-control" id="titulo" aria-describedby="emailHelp" th:field="*{titulo}" required pattern="[a-zA-Z.,]+" title="Por favor digite solo letras">
+            <input type="text" class="form-control" id="titulo" aria-describedby="emailHelp" th:field="*{titulo}" required pattern="[a-zA-Z .,]+" title="Por favor digite solo letras">
         </div>
 
         <div class="mb-3">
