@@ -1,11 +1,18 @@
 package com.Biblioteca.Prestamos.Controlador;
 
 import com.Biblioteca.Prestamos.Entidades.Libro;
+import com.Biblioteca.Prestamos.Entidades.Usuario;
 import com.Biblioteca.Prestamos.Servicios.libroServicio;
+import com.Biblioteca.Prestamos.Servicios.usuarioServicio;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.web.bind.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -14,9 +21,32 @@ public class vistaLibroControlador {
 
     libroServicio servicio;
 
-    public vistaLibroControlador(libroServicio servicio) {
+    usuarioServicio usuServicio;
+
+    //constructor del servicioLivro y servicioUsuario
+    public vistaLibroControlador(libroServicio servicio, usuarioServicio usuServicio) {
         this.servicio = servicio;
+        this.usuServicio = usuServicio;
     }
+
+    // Get mapping para autenticación, llama al index
+    @GetMapping("/")
+    public String index(Model model, @AuthenticationPrincipal OidcUser principal) {
+        if (principal != null) { //para que deje ver el inicio de sesion
+            Usuario user = usuServicio.existeUsuario(principal.getClaims());//si no existe en base datos registre y si no crearlo
+            if (user.getNick().equals("leyhurta12214")) {
+                System.out.println("es administrador");
+                return "Administrador";
+            } else {
+                model.addAttribute("user", user);//llevamos ese user al index para saber que ese usuario esta iniciando sesión y entregar todos sus datos
+                //System.out.println(principal.getClaims());//get clain trae todos los datos del usuario que inicio sesion
+            }
+            return "Administrador";
+        }
+        return "index";
+
+    }
+
 
     @GetMapping("/Prueba/{nombre}")
     //ese modelo crea variables con e
@@ -33,5 +63,48 @@ public class vistaLibroControlador {
      model.addAttribute("lista",lista);
     return "Libros";
 }
+
+    @GetMapping("/formLibro")
+    public String mostrarFormulario(Model model){
+        model.addAttribute("libro",new Libro());
+        return "registrarLibro";
+    }
+
+    @PostMapping("/RegistrarLibro")
+    public String agregarLibro(@ModelAttribute("libro") Libro libro, Model model, RedirectAttributes attributes){
+       if(servicio.agregarLibro(libro)){
+           attributes.addFlashAttribute("mensajeOk","Libro registrado exitosamente");
+       }else {
+            attributes.addFlashAttribute("error","Error, el libro no se registró");
+       }
+       return "redirect:/Libros";
+    }
+
+    @GetMapping("/EditarLibro/{isbn}")
+    public String pasarLibro(@PathVariable("isbn") String isbn, Model model ){
+        model.addAttribute("libro", servicio.buscarLibro1(isbn));
+        return  "EditarLibro";
+    }
+
+    @GetMapping("/EliminarLibro/{isbn}")
+    public String eliminarLibro(@PathVariable("isbn") String isbn, Model mode){
+        servicio.eliminarLibro(isbn);
+        return "redirect:/Libros";
+    }
+
+
+    @PostMapping("/guardarEditado/{isbn}")
+    public String actualizarLibro(@PathVariable("isbn") String isbn,@ModelAttribute("libro") Libro libro,Model model){
+        Libro lib=servicio.buscarLibro1(isbn);
+        lib.setTitulo(libro.getTitulo());
+        lib.setAutor(libro.getAutor());
+        lib.setEditorial(libro.getEditorial());
+        lib.setNo_page(libro.getNo_page());
+        servicio.actualizarLibro(lib);
+        return "redirect:/Libros";
+    }
+
+
+
 
 }

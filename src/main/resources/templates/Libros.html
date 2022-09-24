@@ -13,8 +13,8 @@
             <img class="img-fluid"src="https://i.pinimg.com/originals/1f/1a/94/1f1a946611002ed73656a4bd22210503.jpg" width="30%" height="40%">
         </div>
 
-        <div class="col">
-            <h1 class="display-1 text-right text-light p-4">Gestion de Libros</h1>
+        <div class="col-8">
+            <h1 class="display-1 text-right text-light p-5">Gestion de Libros</h1>
         </div>
     </div>
 </div>
@@ -33,10 +33,60 @@
                     <button type="button"class="btn btn-danger">Eliminar</button>
                 </div>
             </div>
-
     </div>
 </div>
 
+
+
+<!-- mensajitos en pantalla-->
+<div class="alert alert-success alert-dismissible" role="alert" th:if="${mensajeOk != null}">
+    <label th:text="${mensajeOk}"></label>
+    <button class="close" data-dismiss="alert">&times;</button>
+</div>
+
+<div class="alert alert-danger alert-dismissible" role="alert" th:if="${error != null}">
+    <label th:text="${error}"></label>
+    <button class="close" data-dismiss="alert">&times;</button>
+</div>
+
+
+
+
+
+<div class="container mt-5">
+    <a href="/formLibro">
+        <button class="btn btn-primary" type="button">Agregar Libro</button>
+    </a>
+</div>
+
+
+<div class="container mb-5">
+    <table class="table table-hover">
+        <thead>
+        <th>ISBN</th>
+        <th>TITULO</th>
+        <th>AUTOR</th>
+        <th>EDITORIAL</th>
+        <th>PAGINAS</th>
+        </thead>
+        <tr th:each="libro:${lista}">
+            <td th:text="${libro.isbn}"></td>
+            <td th:text="${libro.titulo}"></td>
+            <td th:text="${libro.autor}"></td>
+            <td th:text="${libro.editorial}"></td>
+            <td th:text="${libro.no_page}"></td>
+
+            <td> <a th:href="@{/EditarLibro/{isbn}(isbn=${libro.isbn})}">
+                <button type="button" class="btn btn-warning">Editar</button>
+                </a>
+            </td>
+            <td> <a th:href="@{/EliminarLibro/{isbn}(isbn=${libro.isbn})}">
+                <button type="button" class="btn btn-danger">Eliminar</button>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
 <!--<h1 class="display-1 bg-primary" th:text="Bienvenido...+${nombre}"></h1> -->
